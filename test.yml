@@ -32,10 +32,10 @@ jobs:
       - name: Upload index.html
         uses: azure/webapps-deploy@v2
         with:
-          app-name: YourWebAppName
+          app-name: p4s1-appservice
           slot-name: production
           publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
-          package: ./index.html  # Path to your index.html file
+          package: ./Users\Consultant\armstorageacc\workflowsindex.html  # Path to your index.html file
 
       - name: Clean up
         run: terraform destroy -auto-approve
