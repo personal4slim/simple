@@ -1,44 +1,29 @@
-name: Build and Release
+trigger:
+- main
 
-on:
-  push:
-    branches:
-      - main
+pool:
+  vmImage: 'ubuntu-latest'
 
-jobs:
-  build:
-    runs-on: ubuntu-latest
+steps:
+- task: NodeTool@0
+  inputs:
+    versionSpec: '14.x'
+  displayName: 'Install Node.js'
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+- script: npm install
+  displayName: 'Install dependencies'
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '14'
+- script: npm run build
+  displayName: 'Build application'
 
-      - name: Install dependencies
-        run: npm install
+- task: ArchiveFiles@2
+  inputs:
+    rootFolderOrFile: '$(Build.SourcesDirectory)/dist'  # Adjust to your build output path
+    archiveType: 'zip'
+    archiveFile: $(Build.ArtifactStagingDirectory)/app.zip
 
-      - name: Build application
-        run: npm run build
-
-      - name: Archive build artifacts
-        run: zip -r app.zip dist
-
-      - name: Upload artifact
-        uses: actions/upload-artifact@v2
-        with:
-          name: app-artifact
-          path: app.zip
-
-  release:
-    needs: build
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Deploy to server
-        run: |
-          # Here, you can add commands to deploy your app to a server or hosting environment
-          # For example, copy the artifact to a server using SSH, etc.
+- task: AzureWebApp@1
+  inputs:
+    azureSubscription: 'test'  # Replace with your Azure service connection
+    appName: 'p4sapp'  # Replace with your web app's name
+    package: $(Build.ArtifactStagingDirectory)/app.zip
