@@ -5,8 +5,8 @@ pool:
   vmImage: 'ubuntu-latest'
 
 variables:
- azureSubscription: 
- 
+ azureSubscription: AzureTraining
+
 steps:
 - task: NodeTool@0
   inputs:
@@ -27,6 +27,7 @@ steps:
 
 - task: AzureWebApp@1
   inputs:
-    azureSubscription: 'test'  # Replace with your Azure service connection
+    appType: webApp
+    azureSubscription: $(azureSubscription)  # Replace with your Azure service connection
     appName: 'p4sapp'  # Replace with your web app's name
     package: $(Build.ArtifactStagingDirectory)/app.zip
