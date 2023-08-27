@@ -1,0 +1,61 @@
+name: Build and Release
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '14'
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Build application
+      run: npm run build
+
+    - name: Archive build artifacts
+      run: zip -r app.zip dist  # Adjust the path to your build output
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: app-artifact
+        path: app.zip
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Download artifact
+      uses: actions/download-artifact@v2
+      with:
+        name: app-artifact
+        path: artifacts
+
+    - name: Deploy to server
+      run: |
+        # Here, you can add commands to deploy your app to a server or hosting environment
+        # For example, copy the artifact to a server using SSH, etc.
+        unzip -o artifacts/app.zip -d deployment_folder
+        # Add more deployment commands as needed
+
+    - name: Notify Deployment
+      run: |
+        # Here, you can add commands to notify stakeholders about the successful deployment
+        echo "Deployment completed successfully"
+
