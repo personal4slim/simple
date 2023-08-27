@@ -1,4 +1,5 @@
-name: Terraform Deployment
+name: Deploy Index HTML
+
 on:
   push:
     branches:
@@ -12,29 +13,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Set up Terraform
-        uses: hashicorp/setup-terraform@v1
-        with:
-          terraform_version: '1.0.4'
-
-      - name: Configure Terraform workspace
-        run: terraform init
-
-      - name: Login to Azure
-        uses: azure/login@v1
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
-
-      - name: Deploy using Terraform
-        run: terraform apply -auto-approve
-
       - name: Upload index.html
         uses: azure/webapps-deploy@v2
         with:
-          app-name: p4s1-appservice
+          app-name: p4s1-appservice  # Replace with your web app name
           slot-name: production
           publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
           package: ./Users\Consultant\armstorageacc\workflowsindex.html  # Path to your index.html file
-
-      - name: Clean up
-        run: terraform destroy -auto-approve
