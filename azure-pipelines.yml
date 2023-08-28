@@ -18,7 +18,7 @@ jobs:
   - task: AzureCLI@2
     displayName: 'Azure CLI Login'
     inputs:
-      azureSubscription: '<p4sconnect>'
+      azureSubscription: '<AzureTraining>'
       scriptType: 'bash'
       scriptLocation: 'inlineScript'
       inlineScript: |
