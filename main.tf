@@ -1,8 +1,8 @@
 provider "azurerm" {
-Subscription ID:"606e824b-aaf7-4b4e-9057-b459f6a4436d"
-Secret ID:"7f7f47ce-e23b-4034-90da-0823fa454b18"
-Application (client) ID:"62ba6d2f-4192-4cf5-a00d-42328f7d7dfd"
-Directory (tenant) ID:"104e77d4-81e7-4c16-ab44-935220bed6dd"
+"Subscription_ID" = "606e824b-aaf7-4b4e-9057-b459f6a4436d"
+"Secret_ID" = "7f7f47ce-e23b-4034-90da-0823fa454b18"
+"client_ID" = "62ba6d2f-4192-4cf5-a00d-42328f7d7dfd"
+"tenant_ID" = "104e77d4-81e7-4c16-ab44-935220bed6dd"
   features {}
 }
 
