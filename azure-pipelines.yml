@@ -10,10 +10,20 @@ jobs:
     vmImage: 'ubuntu-latest'
 
   steps:
-  - script: |
-      az login --service-principal -u $(client_id) -p $(client_secret) --tenant $(tenant_id)
+  - task: UsePythonVersion@0
+    inputs:
+      versionSpec: '3.x'
+      addToPath: true
+      
+  - task: AzureCLI@2
     displayName: 'Azure CLI Login'
-   
+    inputs:
+      azureSubscription: '<p4sconnect>'
+      scriptType: 'bash'
+      scriptLocation: 'inlineScript'
+      inlineScript: |
+        echo "Logging in with Azure CLI is not needed. The Azure DevOps service connection will provide authentication."
+    
   - script: |
       terraform init
       terraform plan -var-file=variables.tfvars
