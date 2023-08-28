@@ -10,11 +10,20 @@ jobs:
     vmImage: 'ubuntu-latest'
 
   steps:
+  - task: UsePythonVersion@0
+    inputs:
+      versionSpec: '3.x'
+      addToPath: true
+
   - script: |
+      echo "Setting environment variables"
+      echo "ARM_CLIENT_ID = $(client_id)"
+      echo "ARM_CLIENT_SECRET = $(client_secret)"
+      echo "ARM_TENANT_ID = $(tenant_id)"
       export ARM_CLIENT_ID=$(client_id)
       export ARM_CLIENT_SECRET=$(client_secret)
       export ARM_TENANT_ID=$(tenant_id)
-      #az login --service-principal --username $CLIENT_ID --password $CLIENT_SECRET --tenant $TENANT_ID
+      az login --service-principal --username $ARM_CLIENT_ID --password $ARM_CLIENT_SECRET --tenant $ARM_TENANT_ID
     displayName: 'Azure CLI Login'
     env:
       ARM_CLIENT_ID: $(client_id)
@@ -26,11 +35,6 @@ jobs:
       terraform plan -var-file=variables.tfvars
     displayName: 'Terraform Plan'
    
-  - script: |
-      terraform apply -auto-approve -var-file=variables.tfvars
-    displayName: 'Terraform Apply'
-    condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
-
   - script: |
       terraform apply -auto-approve -var-file=variables.tfvars
     displayName: 'Terraform Apply'
