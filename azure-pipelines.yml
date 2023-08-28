@@ -14,7 +14,7 @@ jobs:
       export ARM_CLIENT_ID=$(client_id)
       export ARM_CLIENT_SECRET=$(client_secret)
       export ARM_TENANT_ID=$(tenant_id)
-      az login --service-principal --username $ARM_CLIENT_ID --password $ARM_CLIENT_SECRET --tenant $ARM_TENANT_ID
+      az login --service-principal --username $CLIENT_ID --password $CLIENT_SECRET --tenant $TENANT_ID
     displayName: 'Azure CLI Login'
     env:
       ARM_CLIENT_ID: $(client_id)
