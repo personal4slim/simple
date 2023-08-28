@@ -1,33 +1,22 @@
-name: Terraform Deployment
+trigger:
+- main
 
-on:
-  push:
-    branches:
-      - main
+pr:
+- '*'
 
 jobs:
-  deploy:
-    runs-on: ubuntu-latest
+- job: Terraform
+  pool:
+    vmImage: 'ubuntu-latest'
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Set up Terraform
-        uses: hashicorp/setup-terraform@v1
-        with:
-          terraform_version: '1.0.4'  # Specify the desired Terraform version
-
-      - name: Configure Terraform workspace
-        run: terraform init
-
-      - name: Login to Azure
-        uses: azure/login@v1
-        with:
-          creds: ${{p4sconnection}}  # Store your Azure credentials as a secret
-
-      - name: Deploy using Terraform
-        run: terraform apply -auto-approve
-
-      - name: Clean up
-        run: terraform destroy -auto-approve
+  steps:
+  - script: |
+      terraform init
+      terraform plan -out=tfplan
+    displayName: 'Terraform Plan'
+    displayName: 'Terraform Plan'
+  
+  - script: |
+      terraform apply tfplan
+    displayName: 'Terraform Apply'
+    condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
