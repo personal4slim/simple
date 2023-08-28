@@ -41,8 +41,3 @@ resource "azurerm_app_service" "example_webapp" {
     "WEBSITE_NODE_DEFAULT_VERSION" = "14"
   }
 }
-
-  app_settings = {
-    "WEBSITE_NODE_DEFAULT_VERSION" = "14"
-  }
-}
