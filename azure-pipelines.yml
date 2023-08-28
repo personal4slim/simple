@@ -10,11 +10,6 @@ jobs:
     vmImage: 'ubuntu-latest'
 
   steps:
-  - task: UsePythonVersion@0
-    inputs:
-      versionSpec: '3.x'
-      addToPath: true
-
   - script: |
       echo "Setting environment variables"
       echo "ARM_CLIENT_ID = $(client_id)"
