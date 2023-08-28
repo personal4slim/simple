@@ -24,7 +24,7 @@ jobs:
       - name: Login to Azure
         uses: azure/login@v1
         with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}  # Store your Azure credentials as a secret
+          creds: ${{p4sconnection}}  # Store your Azure credentials as a secret
 
       - name: Deploy using Terraform
         run: terraform apply -auto-approve
