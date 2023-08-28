@@ -15,15 +15,6 @@ jobs:
       versionSpec: '3.x'
       addToPath: true
       
-  - task: AzureCLI@2
-    displayName: 'Azure CLI Login'
-    inputs:
-      azureSubscription: 'p4sconnect2'  # Use the correct service connection name
-      scriptType: 'bash'
-      scriptLocation: 'inlineScript'
-      inlineScript: |
-        echo "Azure CLI is already authenticated via service connection."
-    
   - script: |
       terraform init
       terraform plan -var-file=variables.tfvars
