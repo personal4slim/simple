@@ -8,11 +8,9 @@ terraform {
 }
 
 provider "azurerm" {
-      source  = "hashicorp/azurerm"
-      version = "=3.0.0"
-    }
-  }
+  features {}
 }
+
 resource "azurerm_resource_group" "example_rg" {
   name     = "my-resource-group"
   location = "East US"
