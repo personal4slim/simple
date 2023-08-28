@@ -12,8 +12,8 @@ jobs:
   steps:
   - script: |
       terraform init
-      terraform plan -out=tfplan
-    displayName: 'Terraform Plan'
+      #terraform plan -out=tfplan
+    displayName: 'Terraform init'
   
   - script: |
       terraform apply tfplan
