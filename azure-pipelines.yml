@@ -12,7 +12,7 @@ jobs:
   steps:
   - script: |
       terraform init
-      terraform plan main.tf
+      terraform plan -main.tf
     displayName: 'Terraform init'
   
   - script: |
