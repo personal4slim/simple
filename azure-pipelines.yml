@@ -15,27 +15,20 @@ jobs:
       versionSpec: '3.x'
       addToPath: true
       
-  - script: |
-      echo "##vso[task.setvariable variable=ARM_CLIENT_ID;]$client_id"
-      echo "##vso[task.setvariable variable=ARM_CLIENT_SECRET;]$secret_id"
-      echo "##vso[task.setvariable variable=ARM_SUBSCRIPTION_ID;]$subscription_id"
-      echo "##vso[task.setvariable variable=ARM_TENANT_ID;]$tenant_id"
-    displayName: 'Set Azure DevOps Variables'
-    
-  - script: |
-      az login --service-principal -u $(ARM_CLIENT_ID) -p $(ARM_CLIENT_SECRET) --tenant $(ARM_TENANT_ID)
+  - task: AzureCLI@2
     displayName: 'Azure CLI Login'
+    inputs:
+      azureSubscription: 'p4sconnect2'  # Use the correct service connection name
+      scriptType: 'bash'
+      scriptLocation: 'inlineScript'
+      inlineScript: |
+        echo "Azure CLI is already authenticated via service connection."
     
   - script: |
       terraform init
       terraform plan -var-file=variables.tfvars
     displayName: 'Terraform Plan'
    
-  - script: |
-      terraform apply -auto-approve -var-file=variables.tfvars
-    displayName: 'Terraform Apply'
-    condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
-
   - script: |
       terraform apply -auto-approve -var-file=variables.tfvars
     displayName: 'Terraform Apply'
