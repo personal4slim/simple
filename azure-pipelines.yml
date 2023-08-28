@@ -11,13 +11,6 @@ jobs:
 
   steps:
   - script: |
-      echo "Setting environment variables"
-      export ARM_CLIENT_ID=$(client_id)
-      export ARM_CLIENT_SECRET=$(client_secret)
-      export ARM_TENANT_ID=$(tenant_id)
-      echo "ARM_CLIENT_ID = $ARM_CLIENT_ID"
-      echo "ARM_TENANT_ID = $ARM_TENANT_ID"
-      az login --service-principal -u $CLIENT_ID -p $CLIENT_SECRET --tenant $TENANT_ID
     displayName: 'Azure CLI Login'
     env:
       ARM_CLIENT_ID: $(client_id)
