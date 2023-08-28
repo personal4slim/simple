@@ -10,6 +10,9 @@ jobs:
     vmImage: 'ubuntu-latest'
 
   steps:
+  - script: az login --service-principal --username $(client_id) --password $(client_secret) --tenant $(tenant_id)
+    displayName: 'Azure CLI Login'
+  
   - script: |
       terraform init
       terraform plan -var-file=variables.tfvars
