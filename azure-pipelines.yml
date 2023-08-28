@@ -10,22 +10,15 @@ jobs:
     vmImage: 'ubuntu-latest'
 
   steps:
-  - task: UsePythonVersion@0
+  - task: AzureCLI@2
+    displayName: 'Azure CLI Login'
     inputs:
-      versionSpec: '3.x'
-      addToPath: true
-
-  - task: TerraformToolInstaller@0
-    inputs:
-      terraformVersion: '0.15.5'
-      
-  - task: AzureRmUseServicePrincipal@1
-    inputs:
-      azureSubscription: 'p4sconnect2'
-      ServicePrincipalId: $(ARM_CLIENT_ID)
-      ServicePrincipalKey: $(ARM_CLIENT_SECRET)
-      TenantId: $(ARM_TENANT_ID)
-      
+      azureSubscription: 'p4sconnect2' # Use your service connection name
+      scriptType: 'bash'
+      scriptLocation: 'inlineScript'
+      inlineScript: |
+        # No need to run 'az login' here, the AzureCLI task handles authentication
+    
   - script: |
       terraform init
       terraform plan -var-file=variables.tfvars
