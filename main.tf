@@ -18,7 +18,7 @@ resource "azurerm_app_service_plan" "example_plan" {
 }
 
 resource "azurerm_app_service" "example_webapp" {
-  name                = "my-webapp"
+  name                = "p4s-webapp2"
   location            = azurerm_resource_group.example_rg.location
   resource_group_name = azurerm_resource_group.example_rg.name
   app_service_plan_id = azurerm_app_service_plan.example_plan.id
