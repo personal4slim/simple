@@ -16,6 +16,6 @@ jobs:
     displayName: 'Terraform init'
   
   - script: |
-      terraform apply tfplan
+      terraform apply main.tf
     displayName: 'Terraform Apply'
     condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
