@@ -15,10 +15,6 @@ provider "azurerm" {
     }
   }
 }
-
-  features {}
-}
-
 resource "azurerm_resource_group" "example_rg" {
   name     = "my-resource-group"
   location = "East US"
