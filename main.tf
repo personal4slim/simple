@@ -1,11 +1,11 @@
 provider "azurerm" {
   features {}
-}
+
 
 variable "subscription_id" {}
 variable "client_id" {}
 variable "tenant_id" {}
-
+}
 resource "azurerm_resource_group" "example_rg" {
   name     = "my-resource-group"
   location = "East US"
