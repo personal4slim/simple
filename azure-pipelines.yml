@@ -12,10 +12,10 @@ jobs:
   steps:
   - script: |
       terraform init
-      terraform plan -main.tf
-    displayName: 'Terraform init'
+      terraform plan -var-file=variables.tfvars
+    displayName: 'Terraform Plan'
   
   - script: |
-      terraform apply -autoapprove
+      terraform apply -auto-approve -var-file=variables.tfvars
     displayName: 'Terraform Apply'
     condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
