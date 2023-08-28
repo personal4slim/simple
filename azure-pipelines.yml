@@ -1,33 +1,22 @@
 trigger:
 - main
 
-pool:
-  vmImage: 'ubuntu-latest'
+pr:
+- '*'
 
 jobs:
 - job: Terraform
+  pool:
+    vmImage: 'ubuntu-latest'
+
   steps:
-  - task: UsePythonVersion@0
-    inputs:
-      versionSpec: '3.x'
-      addToPath: true
-
   - script: |
-      curl -fsSL https://apt.releases.hashicorp.com/gpg | gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
-      echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/hashicorp.list
-     # apt-get update && apt-get install terraform
-
-    displayName: 'Install Terraform'
-
-  - script: terraform init
-    displayName: 'Terraform Init'
-
-  - script: terraform validate
-    displayName: 'Terraform Validate'
-
-  - script: terraform plan -out=tfplan
+      terraform init
+      terraform plan -out=tfplan
     displayName: 'Terraform Plan'
-
-  - script: terraform apply tfplan
+    displayName: 'Terraform Plan'
+  
+  - script: |
+      terraform apply tfplan
     displayName: 'Terraform Apply'
     condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
