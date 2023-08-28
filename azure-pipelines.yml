@@ -14,6 +14,17 @@ jobs:
     inputs:
       versionSpec: '3.x'
       addToPath: true
+
+  - task: TerraformToolInstaller@0
+    inputs:
+      terraformVersion: '0.15.5'
+      
+  - task: AzureRmUseServicePrincipal@1
+    inputs:
+      azureSubscription: 'p4sconnect2'
+      ServicePrincipalId: $(ARM_CLIENT_ID)
+      ServicePrincipalKey: $(ARM_CLIENT_SECRET)
+      TenantId: $(ARM_TENANT_ID)
       
   - script: |
       terraform init
