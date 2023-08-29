@@ -40,7 +40,7 @@ steps:
   displayName: 'Deploy to Azure Web App'
   inputs:
     ConnectionType: 'AzureRM'
-    azureSubscription: '<Your Azure Subscription>'
+    azureSubscription: '<p4sconnect>'
     appType: 'webApp'
     WebAppName: '$(webAppName)'
     packageForLinux: '$(Build.ArtifactStagingDirectory)/webapp.zip'
