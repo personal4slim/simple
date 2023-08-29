@@ -40,7 +40,7 @@ steps:
   displayName: 'Deploy to Azure Web App'
   inputs:
     ConnectionType: 'AzureRM'
-    azureSubscription: '<p4sconnect>'
+    azureSubscription: '<Your Azure Subscription>'
     appType: 'webApp'
     WebAppName: '$(webAppName)'
     packageForLinux: '$(Build.ArtifactStagingDirectory)/webapp.zip'
@@ -49,5 +49,6 @@ steps:
     DeploymentType: 'zipDeploy'
     deploymentSlot: 'production'
 
-- script: echo "Web App URL: https://$(webAppDomain)"
+- script: |
+    echo "Web App URL: https://$(webAppDomain)"
   displayName: 'Web App URL'
