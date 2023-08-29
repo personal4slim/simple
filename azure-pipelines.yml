@@ -1,30 +1,53 @@
 trigger:
 - main
 
-pr:
-- '*'
+pool:
+  vmImage: 'ubuntu-latest'
 
-jobs:
-- job: Terraform
-  pool:
-    vmImage: 'ubuntu-latest'
+variables:
+  buildConfiguration: 'Release'
+  resourceGroupName: 'azeez.akintayo_rg_3333'
+  webAppName: 'p4swebapp4'
+  webAppDomain: 'p4swebapp4.azurewebsites.net'
 
-  steps:
-  - task: AzureCLI@2
-    displayName: 'Azure CLI Login'
-    inputs:
-      azureSubscription: 'p4sconnect2' # Use your service connection name
-      scriptType: 'bash'
-      scriptLocation: 'inlineScript'
-      inlineScript: |
-        # No need to run 'az login' here, the AzureCLI task handles authentication
-    
-  - script: |
-      terraform init
-      terraform plan -var-file=variables.tfvars
-    displayName: 'Terraform Plan'
-   
-  - script: |
-      terraform apply -auto-approve -var-file=variables.tfvars
-    displayName: 'Terraform Apply'
-    condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
+steps:
+- script: echo 'Starting the pipeline...'
+  displayName: 'Initialize'
+
+- task: UseDotNet@2
+  inputs:
+    packageType: 'sdk'
+    version: '6.x'
+    installationPath: $(Agent.ToolsDirectory)/dotnet
+
+- task: DotNetCoreCLI@2
+  displayName: 'Build the Web App'
+  inputs:
+    command: 'build'
+    projects: 'src/YourWebAppProject/YourWebApp.csproj'
+    arguments: '--configuration $(buildConfiguration)'
+
+- task: ArchiveFiles@2
+  displayName: 'Archive Files'
+  inputs:
+    rootFolderOrFile: '$(Build.SourcesDirectory)'
+    includeRootFolder: false
+    archiveType: 'zip'
+    archiveFile: '$(Build.ArtifactStagingDirectory)/webapp.zip'
+    replaceExistingArchive: true
+
+- task: AzureRmWebAppDeployment@4
+  displayName: 'Deploy to Azure Web App'
+  inputs:
+    ConnectionType: 'AzureRM'
+    azureSubscription: '<Your Azure Subscription>'
+    appType: 'webApp'
+    WebAppName: '$(webAppName)'
+    packageForLinux: '$(Build.ArtifactStagingDirectory)/webapp.zip'
+    enableCustomDeployment: true
+    UseWebDeploy: false
+    DeploymentType: 'zipDeploy'
+    deploymentSlot: 'production'
+
+- script: echo "Web App URL: https://$(webAppDomain)"
+  displayName: 'Web App URL'
