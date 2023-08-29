@@ -1,0 +1,12 @@
+/YourWebAppProject
+  YourWebApp.csproj
+  /Controllers
+    HomeController.cs
+  /Views
+    /Home
+      Index.cshtml
+  /wwwroot
+    /css
+      site.css
+    /js
+      script.js
